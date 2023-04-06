@@ -1,0 +1,22 @@
+{
+    "select" : {
+        "allowed_targets" : ["sepal_length", "sepal_width" , "petal_length", "petal_width"],
+        "allowed_tables" : ["iris.iris"],
+        "query_object_format" : {
+            "operation": "",
+            "targets" : [],
+            "from" : "",
+            "conditon" : "",
+            "group_by" : ""
+        }
+    },
+    "update" : {
+        
+    },
+    "insert" : {
+        
+    },
+    "delete" : {
+        
+    }
+}
