@@ -9,7 +9,7 @@ Dependencies:
     - flask
     - flask_restful
     - pandas
-    - snsql
+    - smartnoise-sql
     
 Installation
 - Install all the required dependencies with "pip install" command
