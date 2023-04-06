@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <div id="header_info">
+            Oblivious Query Interface - <a target="_blank" href="https://www.linkedin.com/in/ajun-ravi-520760166/">Ajun Ravi</a>
+        </div>
+        <div class="container"> 
+        <div class="row">
+            <div class="col-25">
+            <label for="query">Query</label>
+            </div>
+            <div class="col-75">
+                <textarea id="query" name="query" placeholder="Write your query.." style="height:200px"></textarea>
+                <label>Eg:  SELECT petal_length, AVG(sepal_length) as sepal_length FROM iris.iris GROUP BY petal_length</label>
+            </div>
+            <div style="text-align: right;"">
+                <div>
+                    <label> <b>Allowed Table(s):</b> </label> iris.iris
+                </div>
+                <div>
+                    <label> <b>Allowed Parameters:</b> </label>sepal_length, sepal_width, petal_length and petal_width
+                </div>
+                <div>
+                    <label> <i>(All the basic aggregate queries as permitted)</i></label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <button id="run">Execute</button>
+        </div>
+        <div id="err_box">
+            <label id="err_msg"></label>
+        </div>
+        </div>
+
+        <div id="result_head">Result:</div>
+        <div id="results"></div>
+        
+        <style type="text/css">
+            * {
+            box-sizing: border-box;
+            font-family: 'Quicksand', sans-serif;
+            }
+
+            table, th, td {
+                border: 1px solid;
+                min-width: 50%;
+                text-align: center;
+                border-collapse: collapse;
+            }
+
+            input[type=text], select, textarea, input[type=email] {
+                width: 100%;
+                padding: 12px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                resize: vertical;
+            }
+
+            label {
+                padding: 12px 12px 12px 0;
+                display: inline-block;
+            }
+
+            button{
+                background-color: #004f43;
+                color: white;
+                padding: 12px 30px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                margin-top: 30px;
+                float: right;
+            }
+
+            button:hover {
+                background-color: #018a75;
+            }
+
+            .container {
+                border-radius: 5px;
+                background-color: #ededed;
+                padding: 20px;
+            }
+
+            .col-25 {
+                float: left;
+                width: 25%;
+                margin-top: 6px;
+            }
+
+            .col-75 {
+                float: left;
+                width: 75%;
+                margin-top: 6px;
+            }
+
+            .row:after {
+                content: "";
+                display: table;
+                clear: both;
+            }
+            
+            @media screen and (max-width: 600px) {
+                .col-25, .col-75, input[type=submit] {
+                    width: 100%;
+                    margin-top: 0;
+                }
+            }
+
+            #err_box {
+                text-align: right;
+                color: red;
+                font-weight: 600;
+            }
+
+            #header_info {
+                font-size: 12px;
+                padding-bottom: 10px;
+            }
+
+            #result_head {
+                font-size: 18px;
+                font-weight: 600;
+                padding-top: 14px;
+                font-family: monospace;
+                padding-bottom: 16px;
+            }
+        </style>
+
+        <script>
+            $(document).ready(function() {
+                $("#run").click(function(){
+                    $(this).text("Please wait..")
+                    $("#err_msg").val("")
+                    $("#results").empty()
+                    let qry = $("#query").val();
+                    $.ajax({
+                        url: `/data?query=${qry}`,
+                        type: 'GET',
+                        success: function(res) {
+                            $("#run").text("Executed")
+                            let tr_info = ""
+                            let tbl_info = "<table>"
+                            if(res.length > 0){
+                                for(var i=0; i<res.length; i++){
+                                    let vals = res[i]
+                                    tr_info = '<tr>'
+                                    for(var j=0; j<vals.length; j++){
+                                        tr_info += `<td>${vals[j]}</td>`
+                                    }
+                                    tr_info += '</tr>'
+                                    tbl_info += tr_info
+                                }
+                                tbl_info += "</table>"
+                            }
+                            $("#results").empty().html(tbl_info)
+                        },
+                        error: function(res) {
+                            $("#run").text("Executed")
+                            msg = (res.responseJSON.hasOwnProperty("message")) ?  res.responseJSON.message : "Something went wrong"
+                            $("#err_msg").text(msg);
+                        }
+                    });
+                }); 
+            });
+        </script>
+    </body>
+</head>

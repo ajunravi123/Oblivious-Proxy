@@ -1,0 +1,31 @@
+engine: csv
+iris:
+  iris:
+    iris:
+      censor_dims: true
+      clamp_columns: true
+      clamp_counts: false
+      max_ids: 1
+      petal_length:
+        lower: 1
+        type: float
+        upper: 7
+      petal_width:
+        lower: 0
+        type: float
+        upper: 3
+      row_privacy: false
+      rows: 150
+      sample_max_ids: true
+      sepal_length:
+        lower: 4
+        type: float
+        upper: 8
+      sepal_width:
+        lower: 2
+        type: float
+        upper: 5
+      id:
+        type: int
+        private_id: true
+      use_dpsu: false
